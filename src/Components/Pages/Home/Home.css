@@ -1,0 +1,8 @@
+.home-page-container {
+    height: 100dvh;
+    background-image: url("https://wallpapers.com/images/hd/paper-texture-background-zlvqcgwohwvd642j.jpg");
+}
+
+.welcome-img {
+    mix-blend-mode: darken;
+}
