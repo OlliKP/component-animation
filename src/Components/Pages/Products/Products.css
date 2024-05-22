@@ -1,6 +1,6 @@
 .products-page-container {
     height: 100dvh;
-    background-image: url("https://img.freepik.com/free-photo/cement-texture_1194-5333.jpg");
+    /* background-image: url("https://img.freepik.com/free-photo/cement-texture_1194-5333.jpg"); */
 }
 
 .product-name {
@@ -18,7 +18,7 @@
 @keyframes slideIn {
     from {
         opacity: 0;
-        transform: translateY(100px);
+        transform: translateY(10px);
     }
     to {
         opacity: 1;

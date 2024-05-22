@@ -1,42 +1,80 @@
-import React, { useEffect, useState } from 'react';
-import { Card } from 'react-bootstrap';
+import React, { useState, useEffect, useContext } from 'react';
+import Card from 'react-bootstrap/Card';
+import '../../Animations.css';
 import './Products.css';
+import { useLocation } from 'react-router-dom';
+import { ThemeContext } from '../../../ThemeContext';
 
 const Products = () => {
-    const [isVisible, setIsVisible] = useState(false); // State to control animation
+    const [isVisible, setIsVisible] = useState(false);
+    const [imagesLoaded, setImagesLoaded] = useState(false);
+    const location = useLocation();
+    const comingFromLeft = ['/'];
+    const theme = useContext(ThemeContext);
 
     const productArr = [
-        { id: 1, name: "Deluxe Icecream", imageUrl: "https://images.pexels.com/photos/3625371/pexels-photo-3625371.jpeg" },
-        { id: 2, name: "Rainbow Icecream", imageUrl: "https://images.pexels.com/photos/3625373/pexels-photo-3625373.jpeg" },
-        { id: 3, name: "Strawberry Shake", imageUrl: "https://images.pexels.com/photos/3625372/pexels-photo-3625372.jpeg" },
-        { id: 4, name: "Sponge Cake", imageUrl: "https://images.pexels.com/photos/3611496/pexels-photo-3611496.jpeg" },
-        { id: 5, name: "Salmon Gourmet", imageUrl: "https://images.pexels.com/photos/3655916/pexels-photo-3655916.jpeg" },
-        { id: 6, name: "Clam Delight", imageUrl: "https://images.pexels.com/photos/3645126/pexels-photo-3645126.jpeg" },
-        { id: 7, name: "Seafood Elegance", imageUrl: "https://images.pexels.com/photos/3611532/pexels-photo-3611532.jpeg" },
-        { id: 8, name: "Savory Symphony", imageUrl: "https://images.pexels.com/photos/3649534/pexels-photo-3649534.jpeg" },
+        { id: 1, name: "Deluxe Icecream", imageUrl: "/images/deluxe-icecream.webp" },
+        { id: 2, name: "Rainbow Icecream", imageUrl: "/images/rainbow-icecream.webp" },
+        { id: 3, name: "Strawberry Shake", imageUrl: "/images/strawberry-shake.webp" },
+        { id: 4, name: "Sponge Cake", imageUrl: "/images/sponge-cake.webp" },
+        { id: 5, name: "Salmon Gourmet", imageUrl: "/images/salmon-gourmet.webp" },
+        { id: 6, name: "Clam Delight", imageUrl: "/images/clam-delight.webp" },
+        // { id: 7, name: "Seafood Elegance", imageUrl: "/images/seafood-elegance.webp" },
+        // { id: 8, name: "Savory Symphony", imageUrl: "/images/savory-symphony.webp" },
     ];
 
-    // Add animation effect when component mounts
     useEffect(() => {
-        setIsVisible(true);
-    }, []);
+        const preloadImages = async () => {
+            const promises = productArr.map(product => {
+                return new Promise((resolve, reject) => {
+                    const img = new Image();
+                    img.src = product.imageUrl;
+                    img.onload = resolve;
+                    img.onerror = reject;
+                });
+            });
+
+            await Promise.all(promises);
+            setImagesLoaded(true);
+        };
+
+        preloadImages();
+    }, [productArr]);
+
+    useEffect(() => {
+        if (imagesLoaded) {
+            setIsVisible(true);
+        }
+    }, [imagesLoaded]);
 
     return (
         <div className='products-page-container container-fluid d-flex flex-column pb-5 justify-content-center align-items-center gap-3'>
-            <div className='container'>
-                <div className='row'>
-                    {productArr.map((product, index) => (
-                        <div key={product.id} className={`col-6 col-lg-3 my-2 ${isVisible ? 'animate-card' : ''}`} style={{ animationDelay: `${index * 80}ms` }}>
-                            <Card>
-                                <Card.Img variant="top" src={product.imageUrl} />
-                                <Card.Body>
-                                    <Card.Title className='product-name text-center'>{product.name}</Card.Title>
-                                </Card.Body>
-                            </Card>
-                        </div>
-                    ))}
+            {!isVisible && (
+                <div className="spinner-border" role="status">
+                    <span className="sr-only"></span>
                 </div>
-            </div>
+            )}
+            {isVisible && (
+                <div className={`container box-shadow container bg-white p-4 m-5 ${
+                    !comingFromLeft.includes(location.state?.prevLocation)
+                        ? 'slideFromLeft'
+                        : 'slideFromRight'
+                }`}>
+                    <h1 className='text-center' style={{ color: theme.themeColor }}>Products</h1>
+                    <div className='row'>
+                        {productArr.map((product, index) => (
+                            <div key={product.id} className={`col-6 col-lg-4 my-2 animate-card`} style={{ animationDelay: `${index * 120}ms` }}>
+                                <Card>
+                                    {/* <Card.Img variant="top" src={product.imageUrl} /> */}
+                                    <Card.Body>
+                                        <Card.Title className='product-name text-center'>{product.name}</Card.Title>
+                                    </Card.Body>
+                                </Card>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

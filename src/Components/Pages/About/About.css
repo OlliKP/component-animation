@@ -1,8 +1,6 @@
 .about-page-container {
     height: 100dvh;
-    background-image: url("https://img.freepik.com/free-photo/white-paper-texture-background_23-2151025744.jpg");
-    background-size: auto 100%;
-    background-position: top;
+    /* background-image: url("https://img.freepik.com/free-photo/white-paper-texture-background_23-2151025744.jpg"); */
 }
 
 .box-shadow {
