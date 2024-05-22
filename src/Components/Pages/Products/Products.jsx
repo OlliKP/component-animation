@@ -65,7 +65,7 @@ const Products = () => {
                         {productArr.map((product, index) => (
                             <div key={product.id} className={`col-6 col-lg-4 my-2 animate-card`} style={{ animationDelay: `${index * 120}ms` }}>
                                 <Card>
-                                    {/* <Card.Img variant="top" src={product.imageUrl} /> */}
+                                    <Card.Img variant="top" src={product.imageUrl} />
                                     <Card.Body>
                                         <Card.Title className='product-name text-center'>{product.name}</Card.Title>
                                     </Card.Body>

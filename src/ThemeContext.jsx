@@ -10,6 +10,7 @@ export const ThemeProvider = ({ children }) => {
     setTheme(newTheme);
     setThemeColor(newThemeColor);
     document.body.style.background = newThemeColor;
+    document.body.style.transition = 'background-color 0.8s ease';
   };
 
   const value = {
